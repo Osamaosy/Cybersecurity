@@ -12,6 +12,7 @@ export interface Course {
   isPurchased?: boolean;
   content: CourseContent[];
   instructorId?: string;
+  attachments: Attachment[];
 }
 
 export interface CourseContent {
@@ -20,6 +21,13 @@ export interface CourseContent {
   duration: string;
   videoUrl: string;
   description: string;
+}
+
+export interface Attachment {
+  id: string;
+  title: string;
+  url: string;
+  type: 'document' | 'video' | 'other';
 }
 
 export interface Category {
@@ -54,6 +62,7 @@ export interface NewCourse {
   isFree?: boolean;
   duration: string;
   image: string;
+  attachments: Attachment[];
 }
 
 export interface CourseEnrollment {

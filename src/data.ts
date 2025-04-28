@@ -41,6 +41,20 @@ export const courses: Course[] = [
         videoUrl: 'https://www.youtube.com/embed/X3DVaMnl5n8?si=QvfstU6T6gx9zCZw',
         description: 'Learn the methodical steps for conducting professional penetration testing'
       }
+    ],
+    attachments: [
+      {
+        id: 'att-1-1',
+        title: 'Course Syllabus',
+        url: 'https://docs.google.com/document/d/1234567890',
+        type: 'document'
+      },
+      {
+        id: 'att-1-2',
+        title: 'Lab Environment Setup Guide',
+        url: 'https://docs.google.com/document/d/0987654321',
+        type: 'document'
+      }
     ]
   },
   {
@@ -68,6 +82,20 @@ export const courses: Course[] = [
         videoUrl: 'https://www.youtube.com/embed/X3DVaMnl5n8?si=QvfstU6T6gx9zCZw',
         description: 'Explore advanced tools used in malware analysis'
       }
+    ],
+    attachments: [
+      {
+        id: 'att-2-1',
+        title: 'Malware Samples (Password Protected)',
+        url: 'https://drive.google.com/file/d/1234567890',
+        type: 'document'
+      },
+      {
+        id: 'att-2-2',
+        title: 'Analysis Tools Guide',
+        url: 'https://docs.google.com/document/d/1234567890',
+        type: 'document'
+      }
     ]
   },
   {
@@ -94,6 +122,20 @@ export const courses: Course[] = [
         duration: '55 Minutes',
         videoUrl: 'https://www.youtube.com/embed/X3DVaMnl5n8?si=QvfstU6T6gx9zCZw',
         description: 'Study different security protocols and how to implement them'
+      }
+    ],
+    attachments: [
+      {
+        id: 'att-3-1',
+        title: 'Network Diagrams',
+        url: 'https://drive.google.com/file/d/0987654321',
+        type: 'document'
+      },
+      {
+        id: 'att-3-2',
+        title: 'Security Tools Overview',
+        url: 'https://docs.google.com/presentation/d/1234567890',
+        type: 'document'
       }
     ]
   }

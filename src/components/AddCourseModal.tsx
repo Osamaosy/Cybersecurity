@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, BookOpen, Clock, BarChart, DollarSign, Image, FileText } from 'lucide-react';
-import { NewCourse } from '../types';
+import { X, BookOpen, Clock, BarChart, DollarSign, Image, FileText, Link, Plus, Trash2 } from 'lucide-react';
+import { NewCourse, Attachment } from '../types';
 import { categories } from '../data';
 
 interface AddCourseModalProps {
@@ -17,11 +17,18 @@ export default function AddCourseModal({ onClose, onAddCourse }: AddCourseModalP
     price: 49.99,
     isFree: false,
     duration: '8 hours',
-    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b'
+    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b',
+    attachments: []
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customImageUrl, setCustomImageUrl] = useState('');
+  const [newAttachment, setNewAttachment] = useState({
+    title: '',
+    url: '',
+    type: 'document' as const
+  });
+  const [attachmentError, setAttachmentError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -38,6 +45,49 @@ export default function AddCourseModal({ onClose, onAddCourse }: AddCourseModalP
       ...prev, 
       isFree: !prev.isFree,
       price: !prev.isFree ? 0 : 49.99 
+    }));
+  };
+
+  const validateAttachmentUrl = (url: string) => {
+    // Basic URL validation
+    const urlPattern = /^https:\/\/(drive\.google\.com|docs\.google\.com|www\.dropbox\.com|onedrive\.live\.com)/;
+    return urlPattern.test(url);
+  };
+
+  const handleAddAttachment = () => {
+    setAttachmentError('');
+
+    if (!newAttachment.title.trim() || !newAttachment.url.trim()) {
+      setAttachmentError('Please fill in both title and URL');
+      return;
+    }
+
+    if (!validateAttachmentUrl(newAttachment.url)) {
+      setAttachmentError('Please enter a valid Google Drive, Dropbox, or OneDrive URL');
+      return;
+    }
+
+    const attachment: Attachment = {
+      id: `attachment-${Date.now()}`,
+      ...newAttachment
+    };
+
+    setCourse(prev => ({
+      ...prev,
+      attachments: [...prev.attachments, attachment]
+    }));
+
+    setNewAttachment({
+      title: '',
+      url: '',
+      type: 'document'
+    });
+  };
+
+  const handleRemoveAttachment = (id: string) => {
+    setCourse(prev => ({
+      ...prev,
+      attachments: prev.attachments.filter(attachment => attachment.id !== id)
     }));
   };
 
@@ -356,6 +406,105 @@ export default function AddCourseModal({ onClose, onAddCourse }: AddCourseModalP
                       The URL must be a valid image (jpg, jpeg, png, gif) or an Unsplash URL
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Course Attachments Section */}
+              <div className="md:col-span-2">
+                <div className="border-t pt-6">
+                  <h4 className="text-lg font-medium text-gray-900 mb-4">Course Attachments</h4>
+                  
+                  {/* Add New Attachment Form */}
+                  <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="attachmentTitle" className="block text-sm font-medium text-gray-700 mb-1">
+                          Attachment Title
+                        </label>
+                        <input
+                          id="attachmentTitle"
+                          type="text"
+                          value={newAttachment.title}
+                          onChange={(e) => setNewAttachment({ ...newAttachment, title: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                          placeholder="Enter attachment title"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="attachmentUrl" className="block text-sm font-medium text-gray-700 mb-1">
+                          Attachment URL
+                        </label>
+                        <div className="relative">
+                          <input
+                            id="attachmentUrl"
+                            type="text"
+                            value={newAttachment.url}
+                            onChange={(e) => setNewAttachment({ ...newAttachment, url: e.target.value })}
+                            className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="https://drive.google.com/..."
+                          />
+                          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <Link className="h-5 w-5 text-gray-400" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <label htmlFor="attachmentType" className="block text-sm font-medium text-gray-700 mb-1">
+                        Attachment Type
+                      </label>
+                      <select
+                        id="attachmentType"
+                        value={newAttachment.type}
+                        onChange={(e) => setNewAttachment({ ...newAttachment, type: e.target.value as 'document' | 'video' | 'other' })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                      >
+                        <option value="document">Document</option>
+                        <option value="video">Video</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    {attachmentError && (
+                      <p className="mt-2 text-sm text-red-600">{attachmentError}</p>
+                    )}
+                    <div className="mt-3">
+                      <button
+                        type="button"
+                        onClick={handleAddAttachment}
+                        className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition"
+                      >
+                        <Plus className="h-4 w-4 ml-2" />
+                        Add Attachment
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Attachments List */}
+                  {course.attachments.length > 0 && (
+                    <div className="space-y-2">
+                      {course.attachments.map((attachment) => (
+                        <div
+                          key={attachment.id}
+                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                        >
+                          <div className="flex items-center">
+                            <Link className="h-5 w-5 text-gray-400 ml-2" />
+                            <div className="ml-3">
+                              <p className="text-sm font-medium text-gray-900">{attachment.title}</p>
+                              <p className="text-xs text-gray-500">{attachment.type}</p>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveAttachment(attachment.id)}
+                            className="text-red-500 hover:text-red-700 transition"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
