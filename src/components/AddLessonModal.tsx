@@ -15,7 +15,7 @@ export default function AddLessonModal({ onClose, onAddLesson, courseId, existin
   const [lesson, setLesson] = useState<Omit<CourseContent, 'id'>>({
     title: '',
     duration: '45 minutes',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    videoUrl: 'https://www.youtube.com/embed/kmJlnUfMd7I?si=fguH9RDUcWf20PSt',
     description: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -73,7 +73,7 @@ export default function AddLessonModal({ onClose, onAddLesson, courseId, existin
   // Validate URL when it changes and after a delay
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (lesson.videoUrl && lesson.videoUrl !== 'https://www.youtube.com/embed/dQw4w9WgXcQ') {
+      if (lesson.videoUrl && lesson.videoUrl !== 'https://www.youtube.com/embed/kmJlnUfMd7I?si=fguH9RDUcWf20PSt') {
         checkUrlAccessibility(lesson.videoUrl);
       }
     }, 800);
@@ -261,7 +261,7 @@ export default function AddLessonModal({ onClose, onAddLesson, courseId, existin
                   </p>
                 )}
                 <p className="mt-1 text-xs text-gray-500">
-                  The video URL must be in YouTube Embed format (e.g., https://www.youtube.com/embed/dQw4w9WgXcQ)
+                  The video URL must be in YouTube Embed format (e.g., https://www.youtube.com/embed/kmJlnUfMd7I?si=fguH9RDUcWf20PSt)
                 </p>
                 <div className="mt-2 p-2 bg-gray-50 rounded-lg">
                   <p className="text-xs text-gray-600 mb-1">How to get the Embed URL:</p>
