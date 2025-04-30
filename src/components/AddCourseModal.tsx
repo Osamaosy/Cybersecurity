@@ -23,10 +23,10 @@ export default function AddCourseModal({ onClose, onAddCourse }: AddCourseModalP
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customImageUrl, setCustomImageUrl] = useState('');
-  const [newAttachment, setNewAttachment] = useState({
+  const [newAttachment, setNewAttachment] = useState<Omit<Attachment, 'id'>>({
     title: '',
     url: '',
-    type: 'document' as const
+    type: 'document'  
   });
   const [attachmentError, setAttachmentError] = useState('');
 
