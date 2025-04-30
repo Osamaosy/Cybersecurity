@@ -78,22 +78,7 @@ export function useCourses(user: UserType | null): UseCoursesReturn {
         ...newCourse,
         instructor: user.name,
         instructorId: user.email,
-        content: [
-          {
-            id: `${courseId}-1`,
-            title: 'Course Introduction',
-            duration: '45 minutes',
-            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            description: 'An introductory overview of the course content and objectives.'
-          },
-          {
-            id: `${courseId}-2`,
-            title: 'Lesson One',
-            duration: '60 minutes',
-            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            description: 'The first lesson of the course.'
-          }
-        ]
+        content: []
       };
       
       const updatedCourses = [...courses, courseToAdd];
